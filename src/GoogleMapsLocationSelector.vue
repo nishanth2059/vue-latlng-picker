@@ -12,6 +12,10 @@
       longitude: {
         type: Number,
         default: -7.309233337402361
+      },
+      zoom: {
+        type: Number,
+        default: 12
       }
     },
 
@@ -28,7 +32,7 @@
 
       // Options
       let mapOptions = {
-        zoom: 12,
+        zoom: this.zoom,
         center: myLatlng
       };
 
@@ -43,15 +47,13 @@
 
       marker.setMap(map);
 
-      let self = this;
-
-      google.maps.event.addListener(map, "center_changed", function() {
+      google.maps.event.addListener(map, "center_changed", () => {
         let lat = map.getCenter().lat();
         let lon = map.getCenter().lng();
         let newLatLng = {lat: lat, lng: lon};
         marker.setPosition(newLatLng);
 
-        self.$emit('locationUpdated', newLatLng)
+        this.$emit('locationUpdated', newLatLng)
       });
     }
   }
