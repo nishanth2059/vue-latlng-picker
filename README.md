@@ -6,7 +6,7 @@ Based on [vue-google-maps-location-selector](https://github.com/deckymcdonough/v
 
 ## Installation
 ---------------
-##npm
+## npm
 ``` sh
 npm install --save vue-latlng-picker
 ```
@@ -16,7 +16,7 @@ Include the google maps script in the head of your index.html file and add your 
 <script src="https://maps.googleapis.com/maps/api/js?key=[YOUR_API_KEY_HERE]"></script>
 ```
 
-Use the component by passing though an initial latitude and longitude. You may also give it a zoom prop, the default is 12.
+Use the component by passing though an initial latitude and longitude. You may also give it a zoom prop, the default is 12.  
 The `locationUpdated` event will fire as soon as the maps `center_changed` event fires.
 ``` html
 <map-location-selector :zoom="15" :latitude=[ADD_INITIAL_LATITUDE] :longitude=[ADD_INITIAL_LONGITUDE]
