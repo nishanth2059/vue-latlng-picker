@@ -1,5 +1,8 @@
 <template>
-  <div class="map-container"></div>
+  <div class="latlng-picker">
+    <div class="latlng-picker__map"></div>
+    <input type="text" class="latlng-picker__autocomplete" ref="input">
+  </div>
 </template>
 
 <script>
@@ -37,24 +40,59 @@
       };
 
       // Apply options
-      let map = new google.maps.Map(this.$el, mapOptions);
+      this.map = new google.maps.Map(this.$el, mapOptions);
+
+      // Create search bar autocomplete
+      this.autocomplete = new google.maps.places.Autocomplete(this.$refs.input, Object.assign({
+        types: ['geocode']
+      }))
+      this.map.controls[google.maps.ControlPosition.TOP_LEFT].push(this.$refs.input)
+      this.autocomplete.addListener('place_changed', this.moveMarker)
+
 
       // Add marker
       let marker = new google.maps.Marker({
         position: myLatlng,
-        map: map
+        map: this.map
       });
 
-      marker.setMap(map);
+      marker.setMap(this.map);
 
-      google.maps.event.addListener(map, "center_changed", () => {
-        let lat = map.getCenter().lat();
-        let lon = map.getCenter().lng();
+      google.maps.event.addListener(this.map, "center_changed", () => {
+        let lat = this.map.getCenter().lat();
+        let lon = this.map.getCenter().lng();
         let newLatLng = {lat: lat, lng: lon};
         marker.setPosition(newLatLng);
 
         this.$emit('locationUpdated', newLatLng)
       });
+    },
+
+    methods: {
+      moveMarker () {
+        var place = this.autocomplete.getPlace()
+        var location = place.geometry && place.geometry.location
+        if (location) {
+          this.place = place
+          this.map.panTo(location)
+        }
+      }
     }
   }
 </script>
+
+<style>
+.latlng-picker__autocomplete {
+    padding: 7px 14px;
+    margin: 10px;
+    width: 30%;
+    min-width: 300px;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+    border: 0;
+    border-radius: 2px 0 0 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+</style>

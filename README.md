@@ -13,7 +13,7 @@ npm install --save vue-latlng-picker
 
 Include the google maps script in the head of your index.html file and add your API key
 ``` html
-<script src="https://maps.googleapis.com/maps/api/js?key=[YOUR_API_KEY_HERE]"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=[YOUR_API_KEY_HERE]&libraries=places"></script>
 ```
 
 Use the component by passing though an initial latitude and longitude. You may also give it a zoom prop, the default is 12.  
